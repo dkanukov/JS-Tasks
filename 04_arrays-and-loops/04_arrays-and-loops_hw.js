@@ -1,4 +1,4 @@
-Задание 1 
+// Задание 1 
 let i = 0
 let count = 70
 let n = 100
@@ -16,7 +16,7 @@ while(i < count){
 
 console.log(arr)
 
-Задание 2
+// Задание 2
 let string = "Привет, мир!"
 let string_reverse = ""
 let arr = []
@@ -30,7 +30,7 @@ for(let i = string.length - 1; i >= 0; i--){
 console.log(string_reverse)
 
 
-Задание 3
+// Задание 3
 
 roadMines = [true, false, false, false, false, false, false, false, false, true]
 let health = 2
@@ -50,7 +50,7 @@ for(let i = 0; i <= roadMines.length; i++){
     }
 }
 
-Задание 4
+// Задание 4
 
 let day = []
 let week = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]

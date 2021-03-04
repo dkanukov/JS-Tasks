@@ -17,7 +17,9 @@ while(i < count){
 console.log(arr);
 
 // Задание 2
+string = "Привет, мир!"
 let string_reverse = string.split('').reverse().join('');
+console.log(string.reverse)
 
 // Задание 3
 
@@ -50,10 +52,6 @@ for(let i = 0; i <= 30; i++){
 }
 
 for(let i = 0; i <= 30; i++){
-    if (k !== 7) {
-        console.log(day[i], 'января', week[k]);
-        k += 1;
-    }else{
-        k = 0;
-    }
+    console.log(day[i], 'января', week[i % 7]);
+    k += 1;
 }

@@ -1,9 +1,7 @@
 function outputWhiteListEmails(whiteList, blackList){
-    let n;
     let sortedList = [];
     for (let index = 0; index < whiteList.length; index++) {
-        n = blackList.includes(whiteList[index]);
-        if (n == false) {
+        if (!blackList.includes(whiteList[index])) {
             sortedList.push(whiteList[index]);
         }
     }

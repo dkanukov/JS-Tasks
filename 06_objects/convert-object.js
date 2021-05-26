@@ -7,21 +7,24 @@ let selectValuesAndLabels = [
 
 function createSelect(selectValuesAndLabels, selectedValue = selectValuesAndLabels[0].value) {
   let select = document.createElement('select');
-  let option = document.createElement('option');
-  let massOfValue = [];
-  let massOfLabels = [];
-  for (let curSelect in selectValuesAndLabels){
-    massOfValue.push(selectValuesAndLabels[curSelect]['value']);
-    massOfLabels.push(selectValuesAndLabels[curSelect]['label']);
-  }
-  if (massOfValue.includes(selectedValue) === false){
-    selectedValue = massOfValue[0];
-  }
   document.body.append(select);
-  document.body.append(option);
-  select.append(option);
-  option.value = selectedValue;
-  option.innerHTML = massOfLabels[massOfValue.indexOf(selectedValue)];
+  let massOfValues = [];
+  for (let curSelect in selectValuesAndLabels){
+    massOfValues.push(selectValuesAndLabels[curSelect]['value'])
+    let option = document.createElement('option');
+    select.append(option);
+    option.value = selectValuesAndLabels[curSelect]['value'];
+    option.innerHTML = (selectValuesAndLabels[curSelect]['label']);
+    if (option.value === selectedValue){
+      console.log(option);
+      select.value = selectedValue;
+    } else if (!massOfValues.includes(selectedValue)){
+      option.value = selectValuesAndLabels[0]['value'];
+      option.innerHTML = selectValuesAndLabels[0]['label'];
+    }
+  }
+  console.log(massOfValues)
+  return select;
 }
-let selectedValue = 'twovalue';
+let selectedValue = 'zxc';
 createSelect(selectValuesAndLabels, selectedValue);

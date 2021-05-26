@@ -8,10 +8,9 @@ let selectValuesAndLabels = [
 function createSelect(selectValuesAndLabels, selectedValue = selectValuesAndLabels[0].value) {
   let select = document.createElement('select');
   let option = document.createElement('option');
-  let curSelect;
   let massOfValue = [];
   let massOfLabels = [];
-  for (curSelect in selectValuesAndLabels){
+  for (let curSelect in selectValuesAndLabels){
     massOfValue.push(selectValuesAndLabels[curSelect]['value']);
     massOfLabels.push(selectValuesAndLabels[curSelect]['label']);
   }

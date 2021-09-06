@@ -5,8 +5,11 @@ document.body.append(header);
 document.body.append(input);
 
 function headerInput() {
-  header.innerHTML = input.value;
   clearTimeout(timeoutId);
+  header.innerHTML = input.value;
+  setTimeout(headerInput, 300)
 }
 
-timeoutId = setTimeout(headerInput, 3000);
+timeoutId = setTimeout(headerInput, 300);
+
+

@@ -1,15 +1,21 @@
 let input = document.createElement('input');
 let header = document.createElement("h2");
 let timeoutId;
+
 document.body.append(header);
 document.body.append(input);
 
-function headerInput() {
-  clearTimeout(timeoutId);
+function inputText() {
   header.innerHTML = input.value;
-  setTimeout(headerInput, 300)
 }
 
-timeoutId = setTimeout(headerInput, 300);
+function trackInput() {
+  clearTimeout(timeoutId);
+  input.oninput = function()
+  { 
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(inputText, 300);
+  }
+}
 
-
+trackInput();

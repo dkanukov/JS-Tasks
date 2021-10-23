@@ -27,9 +27,10 @@
 
         //проверка введено ли что-то в поле
         input.addEventListener('input', function (e){
-          e.preventDefault();
           if(input.value.length !== 0)
             button.disabled = false;
+          else
+              button.disabled = true;
       });
 
         return {
@@ -56,7 +57,7 @@
       let doneButton = document.createElement('button');
       let deleteButton = document.createElement('button');
 
-      if (status == true){
+      if (status === true){
         item.classList.add('list-group-item-success');
       }
 
@@ -68,7 +69,6 @@
       doneButton.textContent = 'Готово';
       deleteButton.classList.add('btn', 'btn-danger');
       deleteButton.textContent = 'Удалить';
-
       //вкладываем кнопки в отдельный элемент, чтобы объединить их в один блок
       buttonGroup.append(doneButton);
       buttonGroup.append(deleteButton);
@@ -81,9 +81,7 @@
       };
     }
 
-    function createTodoApp(container, title = 'Список дел', todoItemsDefault = [
-                                                                    {name: 'Сходить в магазин', done: false},
-                                                                    {name: 'Купить хлеб', done: true}]){
+    function createTodoApp(container, title = 'Список дел', todoItemsDefault[]){
 
       let todoAppTitle = createAppTitle(title);
       let todoItemForm = createTodoItemForm();
@@ -93,8 +91,6 @@
       container.append(todoItemForm.form);
       container.append(todoList);
 
-      // let test = createTodoItem('Lol');
-      // todoList.append(test.item);
       if(todoItemsDefault !== null){
         for (let i = 0; i < todoItemsDefault.length; i++) {
           let todoItem = createTodoItem(todoItemsDefault[i].name, todoItemsDefault[i].done);

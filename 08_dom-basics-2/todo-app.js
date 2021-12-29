@@ -26,12 +26,7 @@
         form.append(buttonWrapper);
 
         //проверка введено ли что-то в поле
-        input.addEventListener('input', function (e){
-          if(input.value.length !== 0)
-            button.disabled = false;
-          else
-              button.disabled = true;
-      });
+		button.disabled = input.value.length === 0
 
         return {
             form,
@@ -49,17 +44,13 @@
     }
 
     //создаем элемент для списка дел
-    function createTodoItem(name, status) {
+    function createTodoItem(name) {
       let item = document.createElement('li');
 
       //кнопки для элемента
       let buttonGroup = document.createElement('div');
       let doneButton = document.createElement('button');
       let deleteButton = document.createElement('button');
-
-      if (status === true){
-        item.classList.add('list-group-item-success');
-      }
 
       //стили для элементов листа + flex
       item.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
@@ -81,7 +72,7 @@
       };
     }
 
-    function createTodoApp(container, title = 'Список дел', todoItemsDefault[]){
+    function createTodoApp(container, title = 'Список дел'){
 
       let todoAppTitle = createAppTitle(title);
       let todoItemForm = createTodoItemForm();
@@ -90,21 +81,6 @@
       container.append(todoAppTitle);
       container.append(todoItemForm.form);
       container.append(todoList);
-
-      if(todoItemsDefault !== null){
-        for (let i = 0; i < todoItemsDefault.length; i++) {
-          let todoItem = createTodoItem(todoItemsDefault[i].name, todoItemsDefault[i].done);
-          todoList.append(todoItem.item);
-          todoItem.doneButton.addEventListener('click', function (){
-            todoItem.item.classList.toggle('list-group-item-success');
-          });
-          todoItem.deleteButton.addEventListener('click', function (){
-            if (confirm('Вы уверены?')){
-              todoItem.item.remove();
-            }
-          });
-        }
-      }
 
       //браузер создает событие submit на форме по нажатию enter или на кнопку создания дела
       todoItemForm.form.addEventListener('submit', function (e){

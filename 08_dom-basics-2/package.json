@@ -1,15 +1,24 @@
 {
-  "private": true,
+  "name": "todo_list",
+  "version": "1.0.0",
+  "description": "Simple web app by JS with using of localstorage",
+  "main": "main.js",
   "scripts": {
-    "lint": "eslint ./",
-    "lint:report": "eslint --format gitlab ./"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "npm install -g browser-sync",
+    "serve": "browser-sync start --server --files *.html *.js *.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkanukov/todo_list.git"
   },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dkanukov/todo_list/issues"
+  },
+  "homepage": "https://github.com/dkanukov/todo_list#readme",
   "devDependencies": {
-    "eslint": "^7.15.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-formatter-gitlab": "^2.1.0",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint": "^8.7.0"
   }
 }

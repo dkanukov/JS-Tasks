@@ -118,6 +118,8 @@
       }
 
       let todoItem = createTodoItem(todoItemForm.input.value);
+      innerTodos.push({ name: todoItemForm.input.value, done: false });
+      localStorage.setItem(todoKey, JSON.stringify(innerTodos));
       todoItem.doneButton.addEventListener('click', function () {
         todoItem.item.classList.toggle('list-group-item-success');
       });
@@ -125,13 +127,18 @@
       todoItem.deleteButton.addEventListener('click', function () {
         if (confirm("Вы уверенны?")) {
           todoItem.item.remove();
+          for (let i = 0; i < innerTodos.length; i++) {
+            const element = innerTodos[i];
+            console.log(todoItem.item.innerHTML);
+            // if (toString(element.name) == todoItemForm.input.value)
+            // {
+            //   console.log("Test");
+            // }
+          }
         }
       });
 
       todoList.append(todoItem.item);
-
-      innerTodos.push({ name: todoItemForm.input.value, done: false });
-      localStorage.setItem(todoKey, JSON.stringify(innerTodos));
 
       todoItemForm.input.value = '';
     });

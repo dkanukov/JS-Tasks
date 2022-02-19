@@ -100,7 +100,6 @@
       todoDefItem.deleteButton.addEventListener('click', function () {
         if (confirm("Вы уверенны?")) {
           todoDefItem.item.remove();
-          console.log(innerTodos.indexOf(element));
           innerTodos.splice(innerTodos.indexOf(element), 1);
           localStorage.setItem(todoKey, JSON.stringify(innerTodos));
         }
@@ -121,15 +120,23 @@
       }
 
       let todoItem = createTodoItem(todoItemForm.input.value);
+      let value = todoItemForm.input.value;
       innerTodos.push({ name: todoItemForm.input.value, done: false });
       localStorage.setItem(todoKey, JSON.stringify(innerTodos));
       todoItem.doneButton.addEventListener('click', function () {
         todoItem.item.classList.toggle('list-group-item-success');
+        let i = 0;
+        while (innerTodos[i].name != value)
+          i++;
+        innerTodos[i].done = !(innerTodos[i].done);
+        localStorage.setItem(todoKey, JSON.stringify(innerTodos));
       });
 
       todoItem.deleteButton.addEventListener('click', function () {
         if (confirm("Вы уверенны?")) {
           todoItem.item.remove();
+          innerTodos.splice(1, 1);
+          localStorage.setItem(todoKey, JSON.stringify(innerTodos));
         }
       });
 

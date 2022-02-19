@@ -100,6 +100,9 @@
       todoDefItem.deleteButton.addEventListener('click', function () {
         if (confirm("Вы уверенны?")) {
           todoDefItem.item.remove();
+          console.log(innerTodos.indexOf(element));
+          innerTodos.splice(innerTodos.indexOf(element), 1);
+          localStorage.setItem(todoKey, JSON.stringify(innerTodos));
         }
       });
       if (element.done) {
@@ -127,14 +130,6 @@
       todoItem.deleteButton.addEventListener('click', function () {
         if (confirm("Вы уверенны?")) {
           todoItem.item.remove();
-          for (let i = 0; i < innerTodos.length; i++) {
-            const element = innerTodos[i];
-            console.log(todoItem.item.innerHTML);
-            // if (toString(element.name) == todoItemForm.input.value)
-            // {
-            //   console.log("Test");
-            // }
-          }
         }
       });
 

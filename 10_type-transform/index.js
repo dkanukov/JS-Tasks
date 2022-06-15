@@ -26,23 +26,8 @@ const defaultListStudents = [
 ];
 const table = document.getElementById('table');
 const addStudentBtn = document.getElementById('addStudent');
-
-function validateForm(student) {
-  console.log(student);
-  return true;
-}
-
-addStudentBtn.addEventListener('click', () => {
-  const newStudent = {
-    name: document.getElementById('nameInput').value.trim(),
-    surname: document.getElementById('surnameInput').value.trim(),
-    secondName: document.getElementById('secondNameInput').value.trim(),
-    dateOfBirthday: new Date(document.getElementById('dateOfBirthdayInput').value),
-    studyYear: new Date(document.getElementById('dateOfStudyInput').value),
-    faculty: document.getElementById('facultyInput').value.trim(),
-  };
-  validateForm(newStudent);
-});
+const alertModal = document.getElementById('alert');
+const modal = document.getElementById('exampleModal');
 
 function getStudentAge(date1) {
   const date2 = new Date();
@@ -81,13 +66,68 @@ function getStudyYears(studentDate) {
   return (`${studentYear}-${endStudyYear} ${countYear}курс`);
 }
 
+function addStudentToTable(student) {
+  const row = table.insertRow(1);
+  row.insertCell(0).innerText = `${student.name} ${student.surname} ${student.secondName}`;
+  row.insertCell(1).innerText = student.faculty;
+  row.insertCell(2).innerText = getStudentAge(student.dateOfBirthday).toString();
+  row.insertCell(3).innerText = getStudyYears(student.studyYear);
+}
+
+function checkStudyYear(date) {
+  if (date.getFullYear() >= 2000 && date.getFullYear() <= new Date().getFullYear()) {
+    return true;
+  }
+  return false;
+}
+
+function checkBirthday(date) {
+  if (date.getFullYear() >= 1900 && date.getFullYear() <= new Date().getFullYear()) {
+    return true;
+  }
+  return false;
+}
+
+function validateStudent(student) {
+  if (student.name === '' || student.surname === '' || student.secondName === '' || student.faculty === ''
+  || !checkBirthday(student.dateOfBirthday) || !checkStudyYear(student.studyYear)) {
+    return false;
+  }
+  checkStudyYear(student.studyYear);
+
+  defaultListStudents.push(student);
+  addStudentToTable(student);
+  return true;
+}
+
+addStudentBtn.addEventListener('click', () => {
+  const newStudent = {
+    name: document.getElementById('nameInput').value.trim(),
+    surname: document.getElementById('surnameInput').value.trim(),
+    secondName: document.getElementById('secondNameInput').value.trim(),
+    dateOfBirthday: new Date(document.getElementById('dateOfBirthdayInput').value),
+    studyYear: new Date(document.getElementById('dateOfStudyInput').value),
+    faculty: document.getElementById('facultyInput').value.trim(),
+  };
+  if (!validateStudent(newStudent)) {
+    alertModal.classList.add('show');
+    setTimeout(() => alertModal.classList.remove('show'), 4000);
+    document.getElementById('nameInput').value = '';
+    document.getElementById('surnameInput').value = '';
+    document.getElementById('secondNameInput').value = '';
+    document.getElementById('dateOfBirthdayInput').value = '';
+    document.getElementById('dateOfStudyInput').value = '';
+    document.getElementById('facultyInput').value = '';
+  } else {
+    alert('Студент добавлен');
+  }
+  modal.classList.remove('show');
+  document.getElementsByClassName('modal-backdrop')[0].classList.remove('show');
+});
+
 (function createDefaultTable() {
   for (let i = 0; i < defaultListStudents.length; i++) {
     const student = defaultListStudents[i];
-    const row = table.insertRow(1);
-    row.insertCell(0).innerText = `${student.name} ${student.surname} ${student.secondName}`;
-    row.insertCell(1).innerText = student.faculty;
-    row.insertCell(2).innerText = getStudentAge(student.dateOfBirthday).toString();
-    row.insertCell(3).innerText = getStudyYears(student.studyYear);
+    addStudentToTable(student);
   }
 }());

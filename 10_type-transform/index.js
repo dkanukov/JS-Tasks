@@ -26,8 +26,10 @@ const defaultListStudents = [
 ];
 const table = document.getElementById('table');
 const addStudentBtn = document.getElementById('addStudent');
-const alertModal = document.getElementById('alert');
 const modal = document.getElementById('exampleModal');
+const resultMessage = document.getElementById('resultMessage');
+const nameColumn = document.getElementById('sortByName');
+let sortByName = 'desc';
 
 function getStudentAge(date1) {
   const date2 = new Date();
@@ -74,31 +76,41 @@ function addStudentToTable(student) {
   row.insertCell(3).innerText = getStudyYears(student.studyYear);
 }
 
-function checkStudyYear(date) {
-  if (date.getFullYear() >= 2000 && date.getFullYear() <= new Date().getFullYear()) {
-    return true;
-  }
-  return false;
-}
-
-function checkBirthday(date) {
-  if (date.getFullYear() >= 1900 && date.getFullYear() <= new Date().getFullYear()) {
-    return true;
-  }
-  return false;
-}
-
 function validateStudent(student) {
-  if (student.name === '' || student.surname === '' || student.secondName === '' || student.faculty === ''
-  || !checkBirthday(student.dateOfBirthday) || !checkStudyYear(student.studyYear)) {
-    return false;
+  const result = {
+    isValid: true,
+    message: '',
+  };
+  if (!student.name) {
+    result.isValid = false;
+    result.message += 'Не указано имя ';
   }
-  checkStudyYear(student.studyYear);
-
-  defaultListStudents.push(student);
-  addStudentToTable(student);
-  return true;
+  if (!student.surname) {
+    result.isValid = false;
+    result.message += 'Не указана фамилия ';
+  }
+  if (!student.secondName) {
+    result.isValid = false;
+    result.message += 'Не указано отчество ';
+  }
+  if (!(student.dateOfBirthday.getFullYear() >= 1900
+    && student.dateOfBirthday.getFullYear() <= new Date().getFullYear())) {
+    result.isValid = false;
+    result.message += 'Неверная дата рождения ';
+  }
+  if (!(student.studyYear.getFullYear() >= 2000
+    && student.studyYear.getFullYear() <= new Date().getFullYear())) {
+    result.isValid = false;
+    result.message += 'Неверная дата окончания обучения ';
+  }
+  if (result.isValid) {
+    defaultListStudents.push(student);
+    addStudentToTable(student);
+    result.message = 'Студент добавлен!';
+  }
+  return result;
 }
+
 
 addStudentBtn.addEventListener('click', () => {
   const newStudent = {
@@ -109,20 +121,60 @@ addStudentBtn.addEventListener('click', () => {
     studyYear: new Date(document.getElementById('dateOfStudyInput').value),
     faculty: document.getElementById('facultyInput').value.trim(),
   };
-  if (!validateStudent(newStudent)) {
-    alertModal.classList.add('show');
-    setTimeout(() => alertModal.classList.remove('show'), 4000);
-    document.getElementById('nameInput').value = '';
-    document.getElementById('surnameInput').value = '';
-    document.getElementById('secondNameInput').value = '';
-    document.getElementById('dateOfBirthdayInput').value = '';
-    document.getElementById('dateOfStudyInput').value = '';
-    document.getElementById('facultyInput').value = '';
+  const result = validateStudent(newStudent);
+  if (!result.isValid) {
+    resultMessage.classList.remove('d-none');
+    resultMessage.classList.add('d-block', 'text-danger');
+    resultMessage.innerText = result.message;
+    setTimeout(() => {
+      resultMessage.classList.remove('d-block', 'text-danger');
+      resultMessage.classList.add('d-none');
+    }, 4000);
   } else {
-    alert('Студент добавлен');
+    resultMessage.classList.remove('d-none');
+    resultMessage.classList.add('d-block', 'text-success');
+    resultMessage.innerText = result.message;
+    setTimeout(() => {
+      resultMessage.classList.remove('d-block', 'text-success');
+      resultMessage.classList.add('d-none');
+    }, 4000);
   }
+  document.getElementById('nameInput').value = '';
+  document.getElementById('surnameInput').value = '';
+  document.getElementById('secondNameInput').value = '';
+  document.getElementById('dateOfBirthdayInput').value = '';
+  document.getElementById('dateOfStudyInput').value = '';
+  document.getElementById('facultyInput').value = '';
   modal.classList.remove('show');
   document.getElementsByClassName('modal-backdrop')[0].classList.remove('show');
+});
+
+nameColumn.addEventListener('click', () => {
+  if (sortByName === 'desc') {
+    sortByName = 'asc';
+    defaultListStudents.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    });
+  } else {
+    sortByName = 'desc';
+    defaultListStudents.sort((a, b) => {
+      if (a.name < b.name) {
+        return 1;
+      }
+      if (a.name > b.name) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+  updTable();
+  console.log(defaultListStudents);
 });
 
 (function createDefaultTable() {

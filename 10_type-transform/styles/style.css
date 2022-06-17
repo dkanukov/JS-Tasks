@@ -4,6 +4,7 @@
   padding: 0;
 }
 
-#sortByName:hover {
+#sortByName:hover,
+#sortByFaculty:hover{
   cursor: pointer;
 }

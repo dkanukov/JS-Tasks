@@ -1,35 +1,38 @@
 const defaultListStudents = [
   {
-    name: 'Павел',
-    surname: 'Блинов',
-    secondName: 'Павлович',
+    name: 'А',
+    surname: 'А',
+    secondName: 'Б',
     dateOfBirthday: new Date(1990, 7, 1),
     studyYear: new Date(2010, 9, 12),
     faculty: 'Политология',
   },
   {
-    name: 'Дмитрий',
-    surname: 'Кузнецов',
-    secondName: 'Денисович',
+    name: 'А',
+    surname: 'А',
+    secondName: 'А',
     dateOfBirthday: new Date(1995, 1, 11),
     studyYear: new Date(2020, 9, 28),
     faculty: 'Прикладная математика',
   },
   {
-    name: 'Никита',
-    surname: 'Гецман',
+    name: 'Б',
+    surname: 'Б',
     secondName: '',
     dateOfBirthday: new Date(2002, 2, 1),
     studyYear: new Date(2020, 9, 1),
     faculty: 'Политология',
   },
 ];
+const sortedStudents = [...defaultListStudents];
 const table = document.getElementById('table');
 const addStudentBtn = document.getElementById('addStudent');
 const modal = document.getElementById('exampleModal');
 const resultMessage = document.getElementById('resultMessage');
 const nameColumn = document.getElementById('sortByName');
+const facultyColumn = document.getElementById('sortByFaculty');
 let sortByName = 'desc';
+let sortByFaculty = 'desc';
 
 function getStudentAge(date1) {
   const date2 = new Date();
@@ -69,7 +72,7 @@ function getStudyYears(studentDate) {
 }
 
 function addStudentToTable(student) {
-  const row = table.insertRow(1);
+  const row = table.insertRow(0);
   row.insertCell(0).innerText = `${student.name} ${student.surname} ${student.secondName}`;
   row.insertCell(1).innerText = student.faculty;
   row.insertCell(2).innerText = getStudentAge(student.dateOfBirthday).toString();
@@ -105,12 +108,21 @@ function validateStudent(student) {
   }
   if (result.isValid) {
     defaultListStudents.push(student);
+    sortedStudents.push(student);
     addStudentToTable(student);
     result.message = 'Студент добавлен!';
   }
   return result;
 }
 
+function updTable() {
+  for (let i = 0; i < sortedStudents.length; i++) {
+    table.rows[i].cells[0].innerText = `${sortedStudents[i].name}  ${sortedStudents[i].surname}  ${sortedStudents[i].secondName}`;
+    table.rows[i].cells[1].innerText = sortedStudents[i].faculty;
+    table.rows[i].cells[2].innerText = getStudentAge(sortedStudents[i].dateOfBirthday).toString();
+    table.rows[i].cells[3].innerText = getStudyYears(sortedStudents[i].studyYear);
+  }
+}
 
 addStudentBtn.addEventListener('click', () => {
   const newStudent = {
@@ -152,29 +164,59 @@ addStudentBtn.addEventListener('click', () => {
 nameColumn.addEventListener('click', () => {
   if (sortByName === 'desc') {
     sortByName = 'asc';
-    defaultListStudents.sort((a, b) => {
-      if (a.name > b.name) {
+    sortedStudents.sort((a, b) => {
+      const aFullname = `${a.surname}${a.name}${a.secondName}`;
+      const bFullname = `${b.surname}${b.name}${b.secondName}`;
+      if (aFullname > bFullname) {
         return 1;
       }
-      if (a.name < b.name) {
+      if (aFullname < bFullname) {
         return -1;
       }
       return 0;
     });
   } else {
     sortByName = 'desc';
-    defaultListStudents.sort((a, b) => {
-      if (a.name < b.name) {
+    sortedStudents.sort((a, b) => {
+      const aFullname = `${a.surname}${a.name}${a.secondName}`;
+      const bFullname = `${b.surname}${b.name}${b.secondName}`;
+      if (aFullname < bFullname) {
         return 1;
       }
-      if (a.name > b.name) {
+      if (aFullname > bFullname) {
         return -1;
       }
       return 0;
     });
   }
-  updTable();
-  console.log(defaultListStudents);
+  updTable(sortedStudents);
+});
+
+facultyColumn.addEventListener('click', () => {
+  if (sortByFaculty === 'desc') {
+    sortByFaculty = 'asc';
+    sortedStudents.sort((a, b) => {
+      if (a.faculty > b.faculty) {
+        return 1;
+      }
+      if (a.faculty < b.faculty) {
+        return -1;
+      }
+      return 0;
+    });
+  } else {
+    sortByFaculty = 'desc';
+    sortedStudents.sort((a, b) => {
+      if (a.faculty < b.faculty) {
+        return 1;
+      }
+      if (a.faculty > b.faculty) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+  updTable(sortedStudents);
 });
 
 (function createDefaultTable() {

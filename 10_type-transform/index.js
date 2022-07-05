@@ -168,34 +168,16 @@ addStudentBtn.addEventListener('click', () => {
 });
 
 nameColumn.addEventListener('click', () => {
-  if (sortByName === 'desc') {
-    sortByName = 'asc';
-    sortedStudents.sort((a, b) => {
-      const aFullname = `${a.surname}${a.name}${a.secondName}`;
-      const bFullname = `${b.surname}${b.name}${b.secondName}`;
-      if (aFullname > bFullname) {
-        return 1;
-      }
-      if (aFullname < bFullname) {
-        return -1;
-      }
-      return 0;
-    });
-  } else {
-    sortByName = 'desc';
-    sortedStudents.sort((a, b) => {
-      const aFullname = `${a.surname}${a.name}${a.secondName}`;
-      const bFullname = `${b.surname}${b.name}${b.secondName}`;
-      if (aFullname < bFullname) {
-        return 1;
-      }
-      if (aFullname > bFullname) {
-        return -1;
-      }
-      return 0;
-    });
+  console.log(tableTr);
+  for (let i = 1; i < tableTr.length - 1; i++) {
+    const row1 = tableTr[i].getElementsByTagName('td')[0];
+    const row2 = tableTr[i + 1].getElementsByTagName('td')[0];
+    if (sortByName === 'desc' && (row1.innerText.toLowerCase() > row2.innerText.toLowerCase())) {
+      table.insertBefore(tableTr[i + 1], tableTr[i]);
+    } else if (sortByName === 'asc' && (row1.innerText.toLowerCase() < row2.innerText.toLowerCase())) {
+      table.insertBefore(tableTr[i + 1], tableTr[i]);
+    }
   }
-  updTable(sortedStudents);
 });
 
 facultyColumn.addEventListener('click', () => {

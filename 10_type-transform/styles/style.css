@@ -5,6 +5,8 @@
 }
 
 #sortByName:hover,
-#sortByFaculty:hover{
+#sortByFaculty:hover,
+#sortByBirthday:hover,
+#sortByStudyYears:hover{
   cursor: pointer;
 }

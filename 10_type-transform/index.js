@@ -26,13 +26,19 @@ const defaultListStudents = [
 ];
 const sortedStudents = [...defaultListStudents];
 const table = document.getElementById('table');
+const tableTr = document.getElementsByTagName('tr');
 const addStudentBtn = document.getElementById('addStudent');
 const modal = document.getElementById('exampleModal');
 const resultMessage = document.getElementById('resultMessage');
 const nameColumn = document.getElementById('sortByName');
 const facultyColumn = document.getElementById('sortByFaculty');
+const birthdayColumn = document.getElementById('sortByBirthday');
+const studyYearColumn = document.getElementById('sortByStudyYears');
+const nameInput = document.getElementById('nameInputFilter');
 let sortByName = 'desc';
 let sortByFaculty = 'desc';
+let sortByBirthday = 'desc';
+let sortByStudyYear = 'desc';
 
 function getStudentAge(date1) {
   const date2 = new Date();
@@ -217,6 +223,74 @@ facultyColumn.addEventListener('click', () => {
     });
   }
   updTable(sortedStudents);
+});
+
+birthdayColumn.addEventListener('click', () => {
+  if (sortByBirthday === 'desc') {
+    sortByBirthday = 'asc';
+    sortedStudents.sort((a, b) => {
+      if (a.dateOfBirthday > b.dateOfBirthday) {
+        return 1;
+      }
+      if (a.dateOfBirthday < b.dateOfBirthday) {
+        return -1;
+      }
+      return 0;
+    });
+  } else {
+    sortByBirthday = 'desc';
+    sortedStudents.sort((a, b) => {
+      if (a.dateOfBirthday < b.dateOfBirthday) {
+        return 1;
+      }
+      if (a.dateOfBirthday > b.dateOfBirthday) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+  updTable(sortedStudents);
+});
+
+studyYearColumn.addEventListener('click', () => {
+  if (sortByStudyYear === 'desc') {
+    sortByStudyYear = 'asc';
+    sortedStudents.sort((a, b) => {
+      if (a.studyYear > b.studyYear) {
+        return 1;
+      }
+      if (a.studyYear < b.studyYear) {
+        return -1;
+      }
+      return 0;
+    });
+  } else {
+    sortByStudyYear = 'desc';
+    sortedStudents.sort((a, b) => {
+      if (a.studyYear < b.studyYear) {
+        return 1;
+      }
+      if (a.studyYear > b.studyYear) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+  updTable(sortedStudents);
+});
+
+nameInput.addEventListener('keyup', () => {
+  for (let i = 0; i < tableTr.length; i++) {
+    const td = tableTr[i].getElementsByTagName('td')[0];
+    if (td) {
+      const textValue = td.innerText;
+      if (textValue.toLowerCase().indexOf(nameInput.value.toLowerCase()) > -1) {
+        tableTr[i].style.display = '';
+      } else {
+        tableTr[i].style.display = 'none';
+      }
+    }
+  }
 });
 
 (function createDefaultTable() {

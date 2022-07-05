@@ -35,10 +35,7 @@ const facultyColumn = document.getElementById('sortByFaculty');
 const birthdayColumn = document.getElementById('sortByBirthday');
 const studyYearColumn = document.getElementById('sortByStudyYears');
 const nameInput = document.getElementById('nameInputFilter');
-let sortByName = 'desc';
-let sortByFaculty = 'desc';
-let sortByBirthday = 'desc';
-let sortByStudyYear = 'desc';
+let sortBy = 'desc';
 
 function getStudentAge(date1) {
   const date2 = new Date();
@@ -121,13 +118,25 @@ function validateStudent(student) {
   return result;
 }
 
-function updTable() {
-  for (let i = 0; i < sortedStudents.length; i++) {
-    table.rows[i].cells[0].innerText = `${sortedStudents[i].name}  ${sortedStudents[i].surname}  ${sortedStudents[i].secondName}`;
-    table.rows[i].cells[1].innerText = sortedStudents[i].faculty;
-    table.rows[i].cells[2].innerText = getStudentAge(sortedStudents[i].dateOfBirthday).toString();
-    table.rows[i].cells[3].innerText = getStudyYears(sortedStudents[i].studyYear);
+function tableSort(n) {
+  if (sortBy === 'desc') {
+    for (let i = 1; i < tableTr.length - 1; i++) {
+      for (let j = 2; j < tableTr.length; j++) {
+        if (tableTr[i].cells[n].innerText > tableTr[j].cells[n].innerText) {
+          table.insertBefore(tableTr[j], tableTr[i]);
+        }
+      }
+    }
+  } else if (sortBy === 'asc') {
+    for (let i = 1; i < tableTr.length - 1; i++) {
+      for (let j = 2; j < tableTr.length; j++) {
+        if (tableTr[i].cells[n].innerText < tableTr[j].cells[n].innerText) {
+          table.insertBefore(tableTr[j], tableTr[i]);
+        }
+      }
+    }
   }
+  sortBy = sortBy === 'asc' ? 'desc' : 'asc';
 }
 
 addStudentBtn.addEventListener('click', () => {
@@ -168,97 +177,19 @@ addStudentBtn.addEventListener('click', () => {
 });
 
 nameColumn.addEventListener('click', () => {
-  console.log(tableTr);
-  for (let i = 1; i < tableTr.length - 1; i++) {
-    const row1 = tableTr[i].getElementsByTagName('td')[0];
-    const row2 = tableTr[i + 1].getElementsByTagName('td')[0];
-    if (sortByName === 'desc' && (row1.innerText.toLowerCase() > row2.innerText.toLowerCase())) {
-      table.insertBefore(tableTr[i + 1], tableTr[i]);
-    } else if (sortByName === 'asc' && (row1.innerText.toLowerCase() < row2.innerText.toLowerCase())) {
-      table.insertBefore(tableTr[i + 1], tableTr[i]);
-    }
-  }
+  tableSort(0);
 });
 
 facultyColumn.addEventListener('click', () => {
-  if (sortByFaculty === 'desc') {
-    sortByFaculty = 'asc';
-    sortedStudents.sort((a, b) => {
-      if (a.faculty > b.faculty) {
-        return 1;
-      }
-      if (a.faculty < b.faculty) {
-        return -1;
-      }
-      return 0;
-    });
-  } else {
-    sortByFaculty = 'desc';
-    sortedStudents.sort((a, b) => {
-      if (a.faculty < b.faculty) {
-        return 1;
-      }
-      if (a.faculty > b.faculty) {
-        return -1;
-      }
-      return 0;
-    });
-  }
-  updTable(sortedStudents);
+  tableSort(1);
 });
 
 birthdayColumn.addEventListener('click', () => {
-  if (sortByBirthday === 'desc') {
-    sortByBirthday = 'asc';
-    sortedStudents.sort((a, b) => {
-      if (a.dateOfBirthday > b.dateOfBirthday) {
-        return 1;
-      }
-      if (a.dateOfBirthday < b.dateOfBirthday) {
-        return -1;
-      }
-      return 0;
-    });
-  } else {
-    sortByBirthday = 'desc';
-    sortedStudents.sort((a, b) => {
-      if (a.dateOfBirthday < b.dateOfBirthday) {
-        return 1;
-      }
-      if (a.dateOfBirthday > b.dateOfBirthday) {
-        return -1;
-      }
-      return 0;
-    });
-  }
-  updTable(sortedStudents);
+  tableSort(2);
 });
 
 studyYearColumn.addEventListener('click', () => {
-  if (sortByStudyYear === 'desc') {
-    sortByStudyYear = 'asc';
-    sortedStudents.sort((a, b) => {
-      if (a.studyYear > b.studyYear) {
-        return 1;
-      }
-      if (a.studyYear < b.studyYear) {
-        return -1;
-      }
-      return 0;
-    });
-  } else {
-    sortByStudyYear = 'desc';
-    sortedStudents.sort((a, b) => {
-      if (a.studyYear < b.studyYear) {
-        return 1;
-      }
-      if (a.studyYear > b.studyYear) {
-        return -1;
-      }
-      return 0;
-    });
-  }
-  updTable(sortedStudents);
+  tableSort(3);
 });
 
 nameInput.addEventListener('keyup', () => {

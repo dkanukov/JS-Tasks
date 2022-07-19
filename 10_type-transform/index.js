@@ -24,7 +24,6 @@ const defaultListStudents = [
     faculty: 'Политология',
   },
 ];
-const sortedStudents = [...defaultListStudents];
 const table = document.getElementById('table');
 const tableTr = document.getElementsByTagName('tr');
 const addStudentBtn = document.getElementById('addStudent');
@@ -35,6 +34,9 @@ const facultyColumn = document.getElementById('sortByFaculty');
 const birthdayColumn = document.getElementById('sortByBirthday');
 const studyYearColumn = document.getElementById('sortByStudyYears');
 const nameInput = document.getElementById('nameInputFilter');
+const facultyInput = document.getElementById('facultyInputFilter');
+const dateInput = document.getElementById('DateStartInputFilter');
+const dateInputEnd = document.getElementById('DateEndInputFilter');
 let sortBy = 'desc';
 
 function getStudentAge(date1) {
@@ -109,9 +111,12 @@ function validateStudent(student) {
     result.isValid = false;
     result.message += 'Неверная дата окончания обучения ';
   }
+  if (!student.faculty) {
+    result.isValid = false;
+    result.message += 'Не указана факультет ';
+  }
   if (result.isValid) {
     defaultListStudents.push(student);
-    sortedStudents.push(student);
     addStudentToTable(student);
     result.message = 'Студент добавлен!';
   }
@@ -197,7 +202,49 @@ nameInput.addEventListener('keyup', () => {
     const td = tableTr[i].getElementsByTagName('td')[0];
     if (td) {
       const textValue = td.innerText;
-      if (textValue.toLowerCase().indexOf(nameInput.value.toLowerCase()) > -1) {
+      if (textValue.toLowerCase().indexOf(nameInput.value.toLowerCase()) !== -1) {
+        tableTr[i].style.display = '';
+      } else {
+        tableTr[i].style.display = 'none';
+      }
+    }
+  }
+});
+
+facultyInput.addEventListener('keyup', () => {
+  for (let i = 0; i < tableTr.length; i++) {
+    const td = tableTr[i].getElementsByTagName('td')[1];
+    if (td) {
+      const textValue = td.innerText;
+      if (textValue.toLowerCase().indexOf(facultyInput.value.toLowerCase()) !== -1) {
+        tableTr[i].style.display = '';
+      } else {
+        tableTr[i].style.display = 'none';
+      }
+    }
+  }
+});
+
+dateInput.addEventListener('keyup', () => {
+  for (let i = 0; i < tableTr.length; i++) {
+    const td = tableTr[i].getElementsByTagName('td')[3];
+    if (td) {
+      const startYear = td.innerText.slice(0, 4);
+      if (startYear.indexOf(dateInput.value) !== -1) {
+        tableTr[i].style.display = '';
+      } else {
+        tableTr[i].style.display = 'none';
+      }
+    }
+  }
+});
+
+dateInputEnd.addEventListener('keyup', () => {
+  for (let i = 0; i < tableTr.length; i++) {
+    const td = tableTr[i].getElementsByTagName('td')[3];
+    if (td) {
+      const endYear = td.innerText.slice(5, 11);
+      if (endYear.indexOf(dateInputEnd.value) !== -1) {
         tableTr[i].style.display = '';
       } else {
         tableTr[i].style.display = 'none';

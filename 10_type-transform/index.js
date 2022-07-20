@@ -1,4 +1,4 @@
-const defaultListStudents = [
+const listStudents = [
   {
     name: 'А',
     surname: 'А',
@@ -24,6 +24,7 @@ const defaultListStudents = [
     faculty: 'Политология',
   },
 ];
+let studentToDisplay = [];
 const table = document.getElementById('table');
 const tableTr = document.getElementsByTagName('tr');
 const addStudentBtn = document.getElementById('addStudent');
@@ -116,7 +117,7 @@ function validateStudent(student) {
     result.message += 'Не указана факультет ';
   }
   if (result.isValid) {
-    defaultListStudents.push(student);
+    listStudents.push(student);
     addStudentToTable(student);
     result.message = 'Студент добавлен!';
   }
@@ -142,6 +143,31 @@ function tableSort(n) {
     }
   }
   sortBy = sortBy === 'asc' ? 'desc' : 'asc';
+}
+
+function tableFilter() {
+  const name = nameInput.value.trim().toLowerCase();
+  const faculty = facultyInput.value.trim().toLowerCase();
+  const dateStart = dateInput.value.trim();
+  const dateEnd = dateInputEnd.value.trim();
+  for (let i = 1; i < tableTr.length; i++) {
+    const tdName = tableTr[i].getElementsByTagName('td')[0];
+    const tdFaculty = tableTr[i].getElementsByTagName('td')[1];
+
+    // eslint-disable-next-line max-len
+    if (tdName.innerText.toLowerCase().indexOf(name) === -1 || tdFaculty.innerText.toLowerCase().indexOf(faculty) === -1) {
+      tableTr[i].style.display = 'none';
+    } else {
+      tableTr[i].style.display = '';
+    }
+  }
+}
+
+function updTable() {
+  table.innerHTML = '';
+  for (let i = 0; i < studentToDisplay.length; i++) {
+    addStudentToTable(studentToDisplay[i]);
+  }
 }
 
 addStudentBtn.addEventListener('click', () => {
@@ -198,64 +224,24 @@ studyYearColumn.addEventListener('click', () => {
 });
 
 nameInput.addEventListener('keyup', () => {
-  for (let i = 0; i < tableTr.length; i++) {
-    const td = tableTr[i].getElementsByTagName('td')[0];
-    if (td) {
-      const textValue = td.innerText;
-      if (textValue.toLowerCase().indexOf(nameInput.value.toLowerCase()) !== -1) {
-        tableTr[i].style.display = '';
-      } else {
-        tableTr[i].style.display = 'none';
-      }
-    }
-  }
+  tableFilter();
 });
 
 facultyInput.addEventListener('keyup', () => {
-  for (let i = 0; i < tableTr.length; i++) {
-    const td = tableTr[i].getElementsByTagName('td')[1];
-    if (td) {
-      const textValue = td.innerText;
-      if (textValue.toLowerCase().indexOf(facultyInput.value.toLowerCase()) !== -1) {
-        tableTr[i].style.display = '';
-      } else {
-        tableTr[i].style.display = 'none';
-      }
-    }
-  }
+  tableFilter();
 });
 
 dateInput.addEventListener('keyup', () => {
-  for (let i = 0; i < tableTr.length; i++) {
-    const td = tableTr[i].getElementsByTagName('td')[3];
-    if (td) {
-      const startYear = td.innerText.slice(0, 4);
-      if (startYear.indexOf(dateInput.value) !== -1) {
-        tableTr[i].style.display = '';
-      } else {
-        tableTr[i].style.display = 'none';
-      }
-    }
-  }
+  // updTable();
 });
 
 dateInputEnd.addEventListener('keyup', () => {
-  for (let i = 0; i < tableTr.length; i++) {
-    const td = tableTr[i].getElementsByTagName('td')[3];
-    if (td) {
-      const endYear = td.innerText.slice(5, 11);
-      if (endYear.indexOf(dateInputEnd.value) !== -1) {
-        tableTr[i].style.display = '';
-      } else {
-        tableTr[i].style.display = 'none';
-      }
-    }
-  }
+  // updTable();
 });
 
 (function createDefaultTable() {
-  for (let i = 0; i < defaultListStudents.length; i++) {
-    const student = defaultListStudents[i];
+  for (let i = 0; i < listStudents.length; i++) {
+    const student = listStudents[i];
     addStudentToTable(student);
   }
 }());

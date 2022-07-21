@@ -153,9 +153,11 @@ function tableFilter() {
   for (let i = 1; i < tableTr.length; i++) {
     const tdName = tableTr[i].getElementsByTagName('td')[0];
     const tdFaculty = tableTr[i].getElementsByTagName('td')[1];
-
-    // eslint-disable-next-line max-len
-    if (tdName.innerText.toLowerCase().indexOf(name) === -1 || tdFaculty.innerText.toLowerCase().indexOf(faculty) === -1) {
+    const tdDateStart = tableTr[i].getElementsByTagName('td')[3].innerText.slice(0, 4);
+    const tdDateEnd = tableTr[i].getElementsByTagName('td')[3].innerText.slice(5, 9);
+    if (tdName.innerText.toLowerCase().indexOf(name) === -1
+      || tdFaculty.innerText.toLowerCase().indexOf(faculty) === -1
+      || tdDateStart.indexOf(dateStart) === -1 || tdDateEnd.indexOf(dateEnd) === -1) {
       tableTr[i].style.display = 'none';
     } else {
       tableTr[i].style.display = '';
@@ -232,11 +234,11 @@ facultyInput.addEventListener('keyup', () => {
 });
 
 dateInput.addEventListener('keyup', () => {
-  // updTable();
+  tableFilter();
 });
 
 dateInputEnd.addEventListener('keyup', () => {
-  // updTable();
+  tableFilter();
 });
 
 (function createDefaultTable() {

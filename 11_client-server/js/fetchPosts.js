@@ -59,7 +59,6 @@ async function getPosts() {
   const response = await fetch(`https://gorest.co.in/public/v2/posts?page=${pageID}`);
   const data = await response.json();
 
-  console.log(data);
   data.forEach((el) => {
     createPosts(el);
   });
@@ -68,7 +67,4 @@ async function getPosts() {
 document.addEventListener('DOMContentLoaded', async () => {
   await getPosts();
   createPagination();
-  // const response = await fetch(`https://gorest.co.in/public/v2/posts?page=2`);
-  // const data = await response.json();
-  // console.log(data)
 });
